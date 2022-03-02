@@ -1,22 +1,20 @@
 import React, {useState} from 'react';
 import '../login/login.css';
-import '../../types/Login'
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebase from '../../config/firebase';
 import app from '../../config/firebase';
+import {Link} from 'react-router-dom';
+
   
-
-
 
 function Login(){
 
-  interface IUser {
-    email:string;
-  }
+ 
   
   const [email, setEmail]= useState('');
   const [password, setPassword]= useState('');
+  const [msgTipo, setMsgTipo] = useState();
 
 
 
@@ -51,14 +49,14 @@ function Login(){
         </div>
         <button onClick={logar} className="w-100 btn btn-lg btn-primary btn-login" type="button">Logar</button>
         <div className="msg-login text-white text-center my-5">
-          <span><strong>WOW! </strong>Você esta conectado! &#128526;</span>
+            {msgTipo === 'sucesso'&& <span><strong>WOW! </strong>Você esta conectado! &#128526;</span>}
           <br></br>
-          <span><strong>OPS! </strong>Verifique se a senha ou usuário estão corretos! &#128546;</span>
+            {msgTipo === 'erro' && <span><strong>OPS! </strong>Verifique se a senha ou usuário estão corretos! &#128546;</span>}
         </div>
         <div className="options-login mt-5 text-center">
           <a href="#" className="mx-2">Recuperar Senha</a>
           <span className="text-white">&#9733;</span>
-          <a href="#" className="mx-2">Quero Cadastrar</a>
+          <Link to='novousuario' className="mx-2">Quero Cadastrar</Link>
         </div>
       </form>
     </div>
