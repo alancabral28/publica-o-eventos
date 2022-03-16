@@ -3,6 +3,8 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import firebase from '../../config/firebase';
 import app from '../../config/firebase';
+import {Link} from 'react-router-dom';
+import Navbar from '../../components/navbar';
 
 import './usuario-novo.css';
 
@@ -30,14 +32,11 @@ function NovoUsuario(){
 
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(() => {
             setCarregando(0);
             setMsgTipo('sucesso') 
-        const user = userCredential.user;
          })          
          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
             setCarregando(0);
             setMsgTipo('erro')
             switch(error.message) 
@@ -60,6 +59,8 @@ function NovoUsuario(){
     }
 
     return(
+        <>
+        <Navbar/>
         <div className="form-cadastro">
             <form className="text-center form-login mx-auto mt-5">
                 <h1 className="h3 mb-3 text-black font-weight-bold">Cadastro</h1>
@@ -72,13 +73,14 @@ function NovoUsuario(){
                 carregando ? <div className="spinner-border text-danger" role="status"><span className="sr-only">Loading...</span></div>
                 :<button onClick={cadastrar} type="button" className="btn btn-lg btn-block mt-3 mb-5 btn-cadastro">Cadastrar</button>
                 }
-                <div className="msg-login text-white text-center my-5">
+                <div className="msg-login text-center my-5">
             {msgTipo === 'sucesso'&& <span><strong>WOW! </strong>Usuário cadastrado com sucesso! &#128526;</span>}
           <br></br>
             {msgTipo === 'erro' && <span><strong>OPS! </strong> {msg} &#128546;</span>}
         </div>
             </form>
         </div>
+    </>
     )
 }
 
