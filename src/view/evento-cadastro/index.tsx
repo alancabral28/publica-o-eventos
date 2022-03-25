@@ -47,8 +47,8 @@ function EventoCadastro(): JSX.Element {
                     publico:1,
                     criacao:new Date ()
                 });
-              } catch ((erro: any) => {
-                setMsgTipo('Não foi possível cadastrar o evento!');
+              } catch (e) {
+                console.error("Não foi possível cadastrar o evento! ", e);
               }
         })
     }
