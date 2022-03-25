@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import firebase from '../../config/firebase';
 import Navbar from '../../components/navbar';
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection} from "firebase/firestore";
+import { getFirestore, collection, addDoc} from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { getStorage, ref} from "firebase/storage";
 import { getDatabase } from 'firebase/database';
@@ -33,21 +33,23 @@ function EventoCadastro(): JSX.Element {
     setUsuarioEmail(useSelector((state:any) => state.usuarioEmail));
 
     function cadastrar() {
-        storage.ref('imagens/${foto.name}').put(foto).then(() => {
-            db.collection('eventos').add({
-                titulo: titulo,
-                tipo: tipo,
-                detalhes: detalhes,
-                data: data,
-                hora: hora,
-                usuario:usuarioEmail,
-                visualizacoes: 0,
-                foto:foto,
-                publico:1,
-                criacao:new Date ()
-            })
-        }).catch((erro: any) => {
-            setMsgTipo('Não foi possível cadastrar o evento!');
+        const imagesRef = ref(storage, 'imagens/${foto.name}').put(foto).then(() => {
+            try {
+                const docRef =  addDoc(collection(db, "eventos"), {
+                    titulo: titulo,
+                    tipo: tipo,
+                    detalhes: detalhes,
+                    data: data,
+                    hora: hora,
+                    usuario:usuarioEmail,
+                    visualizacoes: 0,
+                    foto:foto,
+                    publico:1,
+                    criacao:new Date ()
+                });
+              } catch ((erro: any) => {
+                setMsgTipo('Não foi possível cadastrar o evento!');
+              }
         })
     }
 
@@ -77,7 +79,7 @@ function EventoCadastro(): JSX.Element {
                 </div>
                 <div className="form-group mb-4">
                     <label>Descrição do Evento:</label>
-                    <textarea className="form-control" rows="3" />
+                    <textarea className="form-control" rows="3"/>
                 </div>
 
                 <div className="form-group row mb-4">
@@ -110,5 +112,3 @@ function EventoCadastro(): JSX.Element {
 }
 
 export default EventoCadastro;
-
-
