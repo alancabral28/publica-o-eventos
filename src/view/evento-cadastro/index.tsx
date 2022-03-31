@@ -30,7 +30,7 @@ function EventoCadastro(): JSX.Element {
     
 
     
-    const storage = getStorage();
+    const storage = getStorage(app);
     const db = getFirestore(app);
     const storageRef = ref(storage);
 
