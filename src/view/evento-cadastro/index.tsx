@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import firebase from '../../config/firebase';
 import Navbar from '../../components/navbar';
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc} from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs} from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { getStorage, ref, updateMetadata, uploadBytes, uploadString} from "firebase/storage";
 import { getDatabase } from 'firebase/database';
 import 'firebase/firestore';
+import app from '../../config/firebase';
+
 
 
 function EventoCadastro(): JSX.Element {
@@ -25,13 +27,15 @@ function EventoCadastro(): JSX.Element {
     const [fotoNova, setFotoNova] = useState();    
     const [usuarioEmail, setUsuarioEmail] = useState();
     
+    
 
-
+    
     const storage = getStorage();
-    const db = getFirestore();
+    const db = getFirestore(app);
     const storageRef = ref(storage);
 
   
+    /* Função cadastrar evento */
 
     function cadastrar() {
         setMsgTipo('');
